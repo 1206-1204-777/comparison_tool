@@ -67,7 +67,7 @@ class Goals(ctk.CTk):
             full_path = os.path.join(self.json_path, self.json_file)
     
         with open(full_path, 'a', encoding='utf-8') as f:
-            data = json.dumps(self.goals)
+            data = json.dumps(self.goals, ensure_ascii=False)
             f.write(data + "\n")
 
     def update(self):
@@ -116,7 +116,7 @@ class Goals(ctk.CTk):
             for row in entry_data:
                 if row['key'] == self.json_date:
                     row = update_data[0]
-                new_data = json.dumps(row)
+                new_data = json.dumps(row, ensure_ascii=False)
                 f.write(new_data + '\n')
 
 
