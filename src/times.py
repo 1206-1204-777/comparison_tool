@@ -2,14 +2,10 @@ import customtkinter as ctk
 import csv
 from datetime import datetime
 import os
-class TimeCheker(ctk.CTk):
-    def __init__(self):
-            super().__init__()
-            ctk.set_appearance_mode("light")
-            ctk.set_default_color_theme("blue")
-            self.title('打刻管理')
-            self.geometry("400x500")
-            self.time = datetime.now()
+class TimeCheker(ctk.CTkFrame):
+    def __init__(self, master, **kwargs):
+            super().__init__(master, **kwargs)
+    
             self.flag = False
             self.button = ctk.CTkButton(self, text="開始", command=self.checker)
             self.button.pack(pady=10)
@@ -40,11 +36,12 @@ class TimeCheker(ctk.CTk):
             
     
     def save_to_csv(self):
-        path = "csv/time.csv"
+        year_month = datetime.now().strftime("%Y-%m")
+        path = f"csv/time_{year_month}.csv"
         base_dir = os.path.dirname(os.path.abspath( __file__))
         file = os.path.isfile(path)
-        os.path.join(base_dir, path)
-        with open(path, 'a', encoding="utf-8") as f:
+        full_path = os.path.join(base_dir, path)
+        with open(full_path, 'a', encoding="utf-8") as f:
             writer = csv.writer(f)
             if not file:
                 writer.writerow(["開始日時", "終了日時", "total"])
@@ -53,9 +50,4 @@ class TimeCheker(ctk.CTk):
             duration = str(self.total).split(".")[0]
             data = [start, end, duration]
             writer.writerow(data)
-    def run(self):
-        self.mainloop()
-        
-if __name__ == "__main__":
-    timer = TimeCheker()
-    timer.run()
+

@@ -4,9 +4,9 @@ from dotenv import load_dotenv
 import customtkinter as ctk
 load_dotenv()
 
-class Goals(ctk.CTk):
-    def __init__(self):
-         super().__init__()
+class Goals(ctk.CTkFrame):
+    def __init__(self, master, **kwargs):
+         super().__init__(master, **kwargs)
          self.year = datetime.now().strftime("%Y")
          self.month = datetime.now().strftime("%m")
          self.json_date = datetime.now().strftime("%Y-%m-%d")
@@ -23,15 +23,8 @@ class Goals(ctk.CTk):
          self.option1.set('未着手')
          self.option1.pack()
 
-         ctk.set_appearance_mode("light")
-         ctk.set_default_color_theme("blue")
-         self.title('目標管理')
-         self.geometry("400x500")
-         self.time = datetime.now()
-         self.flag = False
          self.button.pack(pady=15)
          self.update_button.pack(pady=10)
-         self.total = 0
          self.label = ctk.CTkLabel(self, text="")
          self.label.pack(pady=40)
          self.entry1 = ctk.CTkEntry(self)
@@ -116,9 +109,3 @@ class Goals(ctk.CTk):
                 new_data = json.dumps(row, ensure_ascii=False)
                 f.write(new_data + '\n')
 
-
-    def run(self):
-        self.mainloop()
-if __name__ == "__main__":
-    goal = Goals()
-    goal.run()
