@@ -1,6 +1,7 @@
 # Milestone Manager
 
-A personal milestone management tool built with Electron + TypeScript frontend and Python + FastAPI backend.
+A personal milestone management tool built with Electron + TypeScript frontend and Python + FastAPI backend.  
+Designed as a prototype and demonstration tool for a future Rust-based computation engine.
 
 ---
 
@@ -34,6 +35,8 @@ Milestone Manager is a desktop application for tracking work sessions and managi
 | Layer | Technology |
 |---|---|
 | Frontend | Electron + TypeScript + Vite |
+| Layout | CSS Grid (responsive) |
+| Component Design | TypeScript class-based components |
 | API Hub | Python + FastAPI |
 | Time Tracking | times.py |
 | Task Management | goals.py |
@@ -52,6 +55,44 @@ times.py   goals.py
   ↓            ↓
 CSV         JSONL
 ```
+
+### Frontend Component Structure
+
+```
+App (main.ts)
+├── Header        (components.ts)
+├── Sidebar       (components.ts)
+├── MainArea
+│   ├── TimerComponent    (timer.ts)   ← in progress
+│   └── GoalsComponent    (goals.ts)   ← planned
+├── GraphArea     (components.ts)
+└── Footer        (components.ts)
+```
+
+---
+
+## Screen Layout
+
+```
++--------------------------------------------------+
+|  Header  (current function name)                 |
++--------+-----------------------+----------------+
+|        |                       |                |
+| Side   |   Main Area           |  Graph Area    |
+| bar    |   (function view)     |  (NN: planned) |
+|        |                       |                |
++--------+-----------------------+----------------+
+|  Footer  (log output)                            |
++--------------------------------------------------+
+```
+
+| Area | Width | Height |
+|---|---|---|
+| Sidebar | 85fr | full height |
+| Main Area | 732fr | 668fr |
+| Graph Area | 283fr | 668fr |
+| Header | full width | 38fr |
+| Footer | full width | 94fr |
 
 ---
 
@@ -94,17 +135,50 @@ YYYY-MM-DD, YYYY-MM-DD, HH:MM:SS
 - All logic is processed in the backend; the frontend handles display only
 - Frontend and backend validation are applied independently
 - Each feature is modularized and integrated via `main.py`
+- TypeScript components are defined as classes for explicit lifecycle control
 - No AI-generated code used in any part of the implementation
+
+---
+
+## Implementation Status
+
+| Component | Status |
+|---|---|
+| Global CSS layout (CSS Grid) | ✅ Complete |
+| Header / Sidebar / GraphArea / Footer | ✅ Complete |
+| Timer component + CSS | 🔄 In progress |
+| Goals component + CSS | 📋 Planned |
+| Sidebar navigation | 📋 Planned |
+| Backend integration | 📋 Planned |
+| Log output module (logs.py) | 📋 Planned |
 
 ---
 
 ## Planned Features
 
 - [ ] Log output module (`logs.py`)
-- [ ] Full frontend layout (sidebar / header / footer)
-- [ ] Task list view with status and deadline update UI
+- [ ] Sidebar navigation with view switching
+- [ ] Full backend integration
 - [ ] Neural network module for completion time prediction
 - [ ] Coding assistant based on project context
+
+---
+
+## Third-party Licenses
+
+| Library | Version | License |
+|---|---|---|
+| FastAPI | 0.128.0 | MIT |
+| Uvicorn | 0.40.0 | BSD-3-Clause |
+| python-dotenv | 1.2.1 | BSD-3-Clause |
+| Pydantic | 2.12.5 | MIT |
+| Starlette | 0.47.3 | BSD-3-Clause |
+| Electron | 41.2.1 | MIT |
+| TypeScript | - | Apache-2.0 |
+| Vite | - | MIT |
+| vite-plugin-electron-renderer | 0.14.6 | MIT |
+
+See `THIRD_PARTY_LICENSES.txt` for full details.
 
 ---
 
