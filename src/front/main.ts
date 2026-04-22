@@ -1,7 +1,7 @@
 import './global.css';
 import {Footer, GraphArea, Header, Sidebar} from './components/components.ts';
 function App(){
-    const root = document.querySelector<HTMLDivElement>('#app');
+    const root = document.querySelector<HTMLDivElement>('#app-container');
     const header = new Header('機能');
     header.render();
     const sidebar = new Sidebar('機能名')
