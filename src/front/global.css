@@ -11,13 +11,20 @@
 }
 
 .header{
+    display: flex;
+    align-items: center;
     grid-column: 1 / 4;
     grid-row: 1 / 2;
+    background-color: thistle;
+    justify-content: center;
 }
 
 .sidebar{
+    display: flex;
+    justify-content: center;
     grid-column: 1 / 2;
     grid-row: 2 / 3;
+    background-color: coral;
 }
 
 .main-area{
@@ -28,11 +35,17 @@
 }
 
 .graph-area{
+    display: flex;
+    justify-content: center;
     grid-column: 3 / 4;
     grid-row: 2 / 3;
+    background-color: aquamarine;
 }
 
 .footer{
+    display: flex;
+    justify-content: center;
+    background-color: brown;
     grid-column: 1 / 4;
     grid-row: 3 / 4;
 }
