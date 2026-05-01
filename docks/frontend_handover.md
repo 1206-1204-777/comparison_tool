@@ -185,8 +185,6 @@ src/front/
 
 | 対象 | 内容 |
 |---|---|
-| timer.ts | stopボタン押下後もsetIntervalが停止しない（clearInterval未実装） |
-| timer.ts | 画面切り替え後にカウントがリセットされない |
 | menu.ts | addItemsのaction引数にmenu.buildを渡しており不正（仮実装） |
 | components.ts | MainAreaのclassListに`.main-area`（ドット付き）が指定されている |
 | global.css | ライトテーマの変数が3つのみ（全変数のライト版が未定義） |
