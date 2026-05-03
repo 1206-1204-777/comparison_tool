@@ -20,7 +20,7 @@ class TimeCheker():
                  return "開始ボタンが押されていません"
             else:
                 self.endtime = datetime.now()
-                self.total = self.endtime - self.start            
+                self.total = self.endtime - self.start 
                 result = self.save_to_csv()
                 self.flag = False
                 return result
@@ -41,11 +41,13 @@ class TimeCheker():
             with open(full_path, 'a', encoding="utf-8") as f:
                 writer = csv.writer(f)
                 if not file:
-                    writer.writerow(["開始日時", "終了日時", "total"])
-                start = self.start.strftime("%Y-%m-%d")
-                end = self.endtime.strftime("%Y-%m-%d")
+                    writer.writerow(["start-date", "start-time","end-date", "end-time","total"])
+                start_date = self.start.strftime("%Y-%m-%d")
+                start_time = self.start.strftime("%H:%M:%S")
+                end_date = self.endtime.strftime("%Y-%m-%d")
+                end_time = self.endtime.strftime("%H:%M:%S")
                 duration = str(self.total).split(".")[0]
-                data = [start, end, duration]
+                data = [start_date ,start_time, end_date, end_time ,duration]
                 writer.writerow(data)
             
             return str(self.total).split(".")[0]
