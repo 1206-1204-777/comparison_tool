@@ -1,14 +1,14 @@
 from datetime import datetime
 import os, json
 from dotenv import load_dotenv
+from .file_operations import create_dir
 load_dotenv()
 
 class Goals():
     def __init__(self, goal=None, key=None, status=None, limit=None, month=None):
          self.year = datetime.now().strftime("%Y")
          self.month = datetime.now().strftime("%m")
-         self.json_file = f"{self.year}_{month}_goals.jsonl"
-         self.json_path = os.environ.get("STUDY_JSON_DIR")
+         self.json_file = f"json/{self.year}_{month}_goals.jsonl"
          self.goal = goal
          self.key = key
          self.goals = {}
@@ -52,12 +52,12 @@ class Goals():
             self.goals = {'key': recode_id,'created_at': i[0],"limit": self.limit, 
                     'task': i[1], "status": -1, "updated_at": None}
             
-            if self.json_path is None:
+            if self.json_file is None:
                 print("環境変数が機能していません")
             else:
-                full_path = os.path.join(self.json_path, self.json_file)
+                full_path = os.path.join(self.json_file)
                 
-            with open(full_path, 'a', encoding='utf-8') as f:
+            with open(self.json_file, 'a', encoding='utf-8') as f:
                 data = json.dumps(self.goals, ensure_ascii=False)
                 f.write(data + "\n")
 
@@ -86,7 +86,7 @@ class Goals():
         else:
             full_path = os.path.join(self.json_path, self.json_file)
 
-        with open(full_path, 'r', encoding='utf-8') as f:
+        with open(self.json_file, 'r', encoding='utf-8') as f:
             for data in f.readlines():
                 try:
                     file_data = json.loads(data)
