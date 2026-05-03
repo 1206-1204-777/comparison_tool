@@ -1,0 +1,220 @@
+:root{
+    --main-color: #3C3C3C;
+    --text-color: #ccc;
+    --bg-color: #1E1E1E;
+    --main_area-bg: #1E1E1E;
+    --border-color: #555;
+    --log-color: green;
+    --log-error: rgb(173, 9, 9);
+    --stat-base: rgb(17, 112, 175);
+    --stat-avg: rgb(226, 226, 35);
+    --stat-total: white;
+}
+
+@media (prefers-color-scheme: light){
+    :root{
+        --main-color: #ffff;
+        --text-color: #333;
+        --bg-color: white;
+    }
+}
+
+.app-container {
+    display: grid;
+    grid-template-columns: 85fr 732fr 283fr;
+    grid-template-rows: 25fr 668fr 94fr;
+
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.header{
+    display: flex;
+    align-items: start;
+    grid-column: 1 / 4;
+    grid-row: 1 / 2;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: var(--border-color);
+    border-style: solid;
+    border-width: thin;
+    justify-content: center;
+    align-items: center;
+}
+.function-name{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex: 1;
+}
+.menu{
+    display: flex;
+}
+.menu-list{
+    display: flex;
+    flex: 1;
+    list-style: none;
+}
+.sidebar{
+    display: flex;
+    justify-content: center;
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    border: var(--border-color);
+    border-style: solid;
+    border-width: thin;
+}
+
+.main-area{
+    background-color: var(--main_area-bg);
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    display:flex;
+    flex-direction: column;
+    border: var(--border-color);
+    border-style: solid;
+    border-width: thin;
+    min-height: 0;
+}
+
+.graph-area{
+    display: flex;
+    justify-content: center;
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+    border: var(--border-color);
+    border-style: solid;
+    border-width: thin;
+}
+
+.footer{
+    display: flex;
+    justify-content: center;
+    grid-column: 1 / 4;
+    grid-row: 3 / 4;
+    border: var(--border-color);
+    border-style: solid;
+    border-width: thin;
+}
+
+.main-content-top{
+    flex: 1;
+}
+
+.main-statis-bottom{
+    height: 20%;
+    border: 1px solid #ccc; 
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+.timer{
+    width: 100%;
+    height: 20%;
+    font-size: 300%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.operation_area{
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    width: 100%;
+    height: 8%;
+    border: 1px solid var(--border-color);
+    flex-direction: row;
+}
+
+.low-area{
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    min-height: 0;
+    border: var(--border-color);
+}
+.start{
+    display: flex;
+    width: 10%;
+    height: 5%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    padding: 10px 30px;
+    border-radius: 999px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.start:hover{
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+.end{
+    display: flex;
+    width: 10%;
+    height: 5%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 30px;
+    border-radius: 999px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.end:hover{
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+.log-area{
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: 30%;
+    flex-direction: column;
+    border: 1px solid var(--border-color);
+    border-color: var(--border-color);
+    overflow: hidden;
+}
+
+.button-log{
+    display: flex;
+    width: 100%;
+    height: 30%;
+    flex-direction: row;
+    min-height: 0;
+    border: 1px solid var(--border-color);
+    border-color: var(--border-color);
+    overflow-y: auto;
+}
+.csv-area{
+    display: flex;
+    width: 100%;
+}
+.left-area{
+    display: flex;
+    flex: 1;
+    width: 50%;
+    height: 100%;
+    flex-direction: column;
+}
+
+.right-area{
+    display: flex;
+    flex: 1;
+    width: 50%;
+    border: 1px solid var(--border-color);
+}
