@@ -36,13 +36,6 @@ modification, are permitted provided that the following conditions are met:
 
 ---
 
-### python-dotenv 1.2.1
-- License: BSD-3-Clause
-- Copyright: Copyright (c) Saurabh Kumar
-- SPDX: BSD-3-Clause
-
----
-
 ### Pydantic 2.12.5
 - License: MIT
 - Copyright: Copyright (c) Samuel Colvin and contributors
