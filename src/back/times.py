@@ -1,7 +1,8 @@
 import csv
 from datetime import datetime
 import os
-from .file_operations import create_dir
+from .file_operations import create_path
+from .file_operations import FileSearch
 class TimeCheker():
     def __init__(self):
             self.flag = False
@@ -30,9 +31,9 @@ class TimeCheker():
         year_month = datetime.now().strftime("%Y-%m")
         path = f"csv/time_{year_month}.csv"
         
-        full_path = create_dir(path)
-        if not os.path.exists(create_dir('csv/')):
-             os.mkdir(create_dir('csv/'))
+        full_path = create_path(path)
+        if not os.path.exists(create_path('csv/')):
+             os.mkdir(create_path('csv/'))
         file = os.path.isfile(full_path)
 
         try:
@@ -52,3 +53,12 @@ class TimeCheker():
         except Exception as e:
              print(f"エラー発生->{e}")
              return "csv保存に問題発生"
+    
+    def import_to_csv(self):
+         year = datetime.now().strftime('%Y')
+         month = datetime.now().strftime('%m')
+         data = FileSearch(year=year, month=month).reard_to_csv()
+         times = data[1:]
+         target = datetime.now().strftime("%Y-%m-%d")
+         return_data = [row for row in times if row[0] == target]
+         return return_data
