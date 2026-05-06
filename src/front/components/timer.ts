@@ -1,4 +1,5 @@
 import { StatisticalArea } from "./components";
+import { api } from "./api_instans";
 export class Timer{
     timer: HTMLElement;
     operation_area: HTMLElement;
@@ -57,25 +58,30 @@ export class Timer{
 
         this.timer_click = 0
     }
-    private _button_log(button: String){
-        const date = new Date().toLocaleString("en-US", {dateStyle:'full', timeStyle: 'short', hour12: false})
-        if(this.button_log){
-            this.button_log.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            })
-        }
-        this.button_log.append(`${date} ${button}`+ "\n")
+
+    private async _click_button(){
+        const start_data = (await api.timer.timerStartTimerStartGet()).data
+        this.button_log.append(start_data)       
     }
-    render(){
+
+
+    private async _csv_log(){
+        const csv_data = await api.timer.todayTimerTimerTodayGet().then(response => {return response.data})
+        this.csv_area.textContent = csv_data
+        return csv_data
+    }
+
+    
+    async render(){
         const container = document.querySelector('.main-area');
         let count = 0;
         const damyElement = document.createElement('div')
         damyElement.textContent = '統計エリア'
-        this.csv_area.textContent = 'CSVエリア'
         const Statistical = new StatisticalArea(damyElement);
         let isTracking: boolean = false;
+        this._csv_log()
 
+        // start
         this.start_timer.addEventListener("click", () => {
             if(isTracking === true){
                 alert('既に開始しています')
@@ -84,7 +90,7 @@ export class Timer{
             clearInterval(this.timer_click)
             count = 0
 
-            fetch('http://localhost:8082/timer/start', {method:"GET"})
+            this._click_button()
             isTracking = !isTracking
             this.timer_click = setInterval(() => {
             count++;
@@ -93,22 +99,21 @@ export class Timer{
             const s = count % 60
             this.timer.textContent = String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0')}, 1000)
 
-            this._button_log('start')
 
         })
         this.operation_area?.append(this.start_timer)
 
+        // stop
         this.end_timer.addEventListener("click", () => {
             if(isTracking === false){
                 alert('開始ボタンが押されていません')
                 return
             }
-            fetch('http://localhost:8082/timer/stop', {method:"POST"})
+            api.timer.timerEndTimerStopPost()
             isTracking = !isTracking
             clearInterval(this.timer_click)
-            this._button_log(`stop`)
+            this._csv_log()
         })
-
         this.log_area.append(this.button_log)
 
         this.operation_area.append(this.start_timer)

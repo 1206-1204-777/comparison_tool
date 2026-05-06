@@ -10,16 +10,17 @@ class TimeCheker():
     def start_checker(self):
         
         if self.flag is True:
-            return "終了ボタンが押されていません"
+            return "not end"
         else:
             start_time = datetime.now()
             self.start = start_time
             self.flag = True
-            return start_time
+            return_time = datetime.now().strftime('%H:%M:%S')
+            return 'start time is: ' + return_time
 
     def end_checker(self):
             if self.flag is False:
-                 return "開始ボタンが押されていません"
+                 return "not start"
             else:
                 self.endtime = datetime.now()
                 self.total = self.endtime - self.start 
@@ -51,8 +52,7 @@ class TimeCheker():
             
             return str(self.total).split(".")[0]
         except Exception as e:
-             print(f"エラー発生->{e}")
-             return "csv保存に問題発生"
+             return f"Problems occurred with saving the CSV file.{e}"
     
     def import_to_csv(self):
          year = datetime.now().strftime('%Y')
