@@ -82,7 +82,11 @@
     border-width: thin;
     min-height: 0;
 }
-
+.goals-area{
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+}
 .graph-area{
     display: flex;
     justify-content: center;
@@ -226,8 +230,25 @@ body{
 }
 
 .right-area{
+
+    width: 50%;
+    height: 100%;
+    min-height: 0;
+    text-align: start;
+    border: 1px solid var(--border-color);
+    overflow-y: auto;
+}
+
+.goal-view{
     display: flex;
     flex: 1;
-    width: 50%;
+    height: 50%;
+    border: 1px solid var(--border-color);
+}
+
+.statistics{
+    display: flex;
+    flex: 1;
+    height: 50%;
     border: 1px solid var(--border-color);
 }
