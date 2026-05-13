@@ -2,7 +2,7 @@ import fastapi
 import fastapi.middleware.cors
 import src.back.goals as goals, src.back.times as times
 import src.back.file_operations as files
-from typing import Annotated
+from typing import Annotated, List, Dict
 
 app = fastapi.FastAPI()
 timer = times.TimeCheker()
@@ -28,13 +28,18 @@ def today_timer():
     return result
 
 @app.post("/goals/create_project")
-def goals_set(ticket, limit):
-    result = goals.Goals(goal=ticket, status=None, limit=limit).create_project()
+def goals_set(ticket, limit, description: Annotated[list[str], fastapi.Form()]):
+    result = goals.Goals(goal=ticket, limit=limit, description=description).create_project()
     return result
 
-@app.post("/goals/update")
-def goals_update(key, status, limit, month):
-    result = goals.Goals(key=key, status=status, limit=limit, month=month).update()
+@app.post("/goals/create_child_ticket")
+def create_child_ticket(project_key, status, limit, overview, description:Annotated[list[str], fastapi.Form()]):
+    result = goals.Goals(key=project_key, status=status, limit=limit,overview=overview ,description=description).create_child_ticket()
+    return result
+
+@app.post("/goals/create_grandchild_ticket")
+def create_grandchild_ticket(project_key, status, limit, domain_key, description:Annotated[list[str], fastapi.Form()]):
+    result = goals.Goals(key=project_key, domain_key=domain_key ,status=status, limit=limit, description=description).create_grandchild_ticket()
     return result
 
 @app.get('/data/json')
