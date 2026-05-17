@@ -26,14 +26,14 @@ class Goals():
 
     def create_project(self):
         recode_id = str(uuid.uuid4())
-        self.json_date = datetime.now().strftime("%Y-%m-%d")
+        times = datetime.now().strftime("%y-%m-%d %H:%M:%S")
         if self.goal == " ":
             return "プロジェクト名が登録されていません。プロジェクト名を設定してください。"
         
         self.goals = {
             "ticket_id": recode_id ,
             "title": self.goal ,
-            "created_at": self.json_date, 
+            "created_at": times, 
             "description": [{"overview": self.overview,"datail": self.datail}],
             "limit": self.limit,
             "completion_flag": self.flag,
@@ -51,7 +51,7 @@ class Goals():
     
     def create_child_ticket(self):
         id = uuid.uuid4()
-        times = datetime.now().strftime('%H:%M:%S')
+        times = datetime.now().strftime("%y-%m-%d %H:%M:%S")
         if self.label[0]['purpose'] is None or self.label[0]['purpose'] == " ":
             return "目標が登録されていません。"
         if self.label[0]['work_domain'] is None or self.label[0]['work_domain'] == " ":
@@ -81,7 +81,7 @@ class Goals():
         
     def create_grandchild_ticket(self):
         id = uuid.uuid4()
-        times = datetime.now().strftime('%H:%M:%S')
+        times = datetime.now().strftime("%y-%m-%d %H:%M:%S")
         if self.task_id == " ":
             return "タスクが登録されていません。"
         if isinstance(self.status, str):
@@ -98,10 +98,10 @@ class Goals():
                         j['task'].append({
                                 "task_id": str(id),
                                 "title": self.task_name,
-                                "created_at": times,
+                                "created_at": datetime.now().strftime("%y-%m-%d %H:%M:%S"),
                                 "limit": self.limit,
                                 "status": self.status,
-                                "updated_at": times
+                                "updated_at": str(times)
                             })
                     else: continue
         with open(self.json_file, 'w', encoding='utf-8') as f :
