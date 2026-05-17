@@ -5,7 +5,7 @@ import uuid
 
 class Goals():
     def __init__(
-            self, goal=None, key=None, domain_key=None,status=None, limit=None, overview=None, datail=None,
+            self, goal=None, key=None, domain_key=None,status=0, limit=None, overview=None, datail=None,
             purpose=None, work_domain=None, task=None):
          self.year = datetime.now().strftime("%Y")
          self.month = datetime.now().strftime("%m")
@@ -21,20 +21,23 @@ class Goals():
          self.overview = overview
          self.datail = datail
          self.task = task
+         self.flag = False
 
-         print(self.datail, self.overview)
     def create_project(self):
-        self.json_date = datetime.now().strftime("%Y-%m-%d")
         recode_id = str(uuid.uuid4())
+        self.json_date = datetime.now().strftime("%Y-%m-%d")
         if self.goal == " ":
             return "プロジェクト名が登録されていません。プロジェクト名を設定してください。"
         
         self.goals = {
-            "ticket_id": recode_id ,"title": self.goal ,"created_at": self.json_date, 
+            "ticket_id": recode_id ,
+            "title": self.goal ,
+            "created_at": self.json_date, 
             "description": [{"overview": self.overview,"datail": self.datail}],
-                "limit": self.limit,
-                "work_domain": []
-                }
+            "limit": self.limit,
+            "completion_flag": self.flag,
+            "work_domain": []
+            }
         
         if not os.path.exists(create_path('json/')):
             os.mkdir(create_path('json/'))
@@ -47,8 +50,11 @@ class Goals():
     
     def create_child_ticket(self):
         id = uuid.uuid4()
-
         times = datetime.now().strftime('%H:%M:%S')
+        if self.label[0]['purpose'] is None or self.label[0]['purpose'] == " ":
+            return "目標が登録されていません。"
+        if self.label[0]['work_domain'] is None or self.label[0]['work_domain'] == " ":
+            return "作業領域が登録されていません。"
         try:
             with open(self.json_file, 'r', encoding='utf-8') as f:
                 datas = [json.loads(line) for line in f.readlines()]
@@ -59,9 +65,9 @@ class Goals():
                         "label": self.label,
                         "overview": self.overview,
                         "created_at": times,
-                        "states": 0, 
-                        "limit": '2026-05-11',
-                        "completion_flag": True,
+                        "status": self.status, 
+                        "limit": self.limit,
+                        "completion_flag": self.flag,
                         "task":[]
                     })
             with open(self.json_file, 'w', encoding='utf-8') as f :
@@ -75,7 +81,8 @@ class Goals():
     def create_grandchild_ticket(self):
         id = uuid.uuid4()
         times = datetime.now().strftime('%H:%M:%S')
-
+        if self.task == " ":
+            return "タスクが登録されていません。"
         with open(self.json_file, 'r', encoding='utf-8') as f:
             datas = [json.loads(line) for line in f.readlines()]
         for i in datas:
@@ -87,8 +94,7 @@ class Goals():
                                 "title": self.task,
                                 "created_at": times,
                                 "limit": self.limit,
-                                "states": self.status,
-                                "completion_flag": False,
+                                "status": self.status,
                                 "updated_at": times
                             })
                     else: continue
@@ -96,3 +102,12 @@ class Goals():
             for i in datas: 
                 f.write(json.dumps(i, ensure_ascii=False) + '\n')
         return datas[0]
+
+    def changed_flag(self):
+        self.json_date = datetime.now().strftime('%H:%M:%S')
+        if self.status == 0 or -1:
+            self.flag = False
+            return self.flag
+        if self.status == 1:
+            self.flag = True
+            return self.flag
