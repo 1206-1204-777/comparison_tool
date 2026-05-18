@@ -118,8 +118,7 @@ class Goals():
         try:
             with open(self.json_file, 'r', encoding='utf-8') as f:
                 datas = [json.loads(line) for line in f.readlines()]
-            update_parent_ticket(datas)
-            update_child_ticket(datas)
+            
             for d in datas:
                 for i in d['work_domain']:
                     if i['domain_id'] == self.domain_key:
@@ -140,29 +139,38 @@ class Goals():
                                 else:
                                     continue
                                 j['updated_at'] = time
+
+            if update_child_ticket_result := update_child_ticket(datas, self.domain_key):
+                return update_child_ticket_result
+            if update_parent_ticket_result := update_parent_ticket(datas, self.domain_key):
+                return update_parent_ticket_result
+            
+            
             with open(self.json_file, 'w', encoding='utf-8') as f :
                 for i in datas: 
                     f.write(json.dumps(i, ensure_ascii=False) + '\n')
+            
             return datas[0]
         
         except Exception as e:
             traceback.print_exc()
             return f"データの更新時にエラー発生-> {e}"
 
-def update_child_ticket(data):
+def update_child_ticket(data, domain_key):
     time = datetime.now().strftime("%y-%m-%d %H:%M:%S")
-    flag_data = []
     for d in data:
         for i in d['work_domain']:
-            for j in i['task']:
-                if isinstance(j['status'], str):
-                    traceback.print_exc()
-                    return f"statusに文字列が格納されています。-> {j['status']}"
-                if j['status'] > 1 or j['status'] <= -2:
-                    traceback.print_exc()
-                    return f"statusに不正な値が格納されています。-> {j['status']}"
-                flag_data.append(j['status'])
-                result = all(flag_data)
+            flag_data = []
+            if i['domain_id'] == domain_key:
+                for j in i['task']:
+                    if isinstance(j['status'], str):
+                        traceback.print_exc()
+                        return f"statusに文字列が格納されています。-> {j['status']}"
+                    if j['status'] > 1 or j['status'] <= -2:
+                        traceback.print_exc()
+                        return f"statusに不正な値が格納されています。-> {j['status']}"
+                    flag_data.append(j['status'])
+                result = all(s == 1 for s in flag_data)
                 if result:
                     i['completion_flag'] = True
                     i['status'] = 1
@@ -171,24 +179,23 @@ def update_child_ticket(data):
                     i['completion_flag'] = False
                     i['status'] = 0
 
-def update_parent_ticket(data):
+def update_parent_ticket(data, domain_key):
     time = datetime.now().strftime("%y-%m-%d %H:%M:%S")
-    flag_data = []
     for d in data:
+        flag_data = []
         for i in d['work_domain']:
-            if isinstance(i['status'], str):
-                traceback.print_exc()
-                return f"statusに文字列が格納されています。-> {i['status']}"
-            if i['status'] > 1 or i['status'] <= -2:
-                traceback.print_exc()
-                return f"statusに不正な値が格納されています。-> {i['status']}"
-            if i['status'] == 1:
+            if i['domain_id'] == domain_key:
+                if isinstance(i['status'], str):
+                    traceback.print_exc()
+                    return f"statusに文字列が格納されています。-> {i['status']}"
+                if i['status'] > 1 or i['status'] <= -2:
+                    traceback.print_exc()
+                    return f"statusに不正な値が格納されています。-> {i['status']}"
                 flag_data.append(i['status'])
-                result = all(flag_data)
+                result = all(s == 1 for s in flag_data)
+                print(result)
                 if result:
                     d['completion_flag'] = True
-                    d['status'] = 1
                     d['updated_at'] = time
                 else:
                     d['completion_flag'] = False
-                    d['status'] = 0
