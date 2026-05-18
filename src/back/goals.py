@@ -24,6 +24,7 @@ class Goals():
          self.task_id = task_id
          self.flag = False
          self.task_name = task_name
+         self.update_time = None
 
     def create_project(self):
         recode_id = str(uuid.uuid4())
@@ -38,6 +39,7 @@ class Goals():
             "description": [{"overview": self.overview,"datail": self.datail}],
             "limit": self.limit,
             "completion_flag": self.flag,
+            "updated_at": self.update_time,
             "work_domain": []
             }
         
@@ -70,6 +72,7 @@ class Goals():
                         "status": self.status,
                         "limit": self.limit,
                         "completion_flag": self.flag,
+                        "updated_at": self.update_time,
                         "task":[]
                     })
             with open(self.json_file, 'w', encoding='utf-8') as f :
@@ -147,7 +150,7 @@ class Goals():
             return f"データの更新時にエラー発生-> {e}"
 
 def update_child_ticket(data):
-    # time = datetime.now().strftime("%y-%m-%d %H:%M:%S")
+    time = datetime.now().strftime("%y-%m-%d %H:%M:%S")
     flag_data = []
     for d in data:
         for i in d['work_domain']:
@@ -163,12 +166,13 @@ def update_child_ticket(data):
                 if result:
                     i['completion_flag'] = True
                     i['status'] = 1
+                    i['updated_at'] = time
                 else:
                     i['completion_flag'] = False
                     i['status'] = 0
 
 def update_parent_ticket(data):
-    # time = datetime.now().strftime("%y-%m-%d %H:%M:%S")
+    time = datetime.now().strftime("%y-%m-%d %H:%M:%S")
     flag_data = []
     for d in data:
         for i in d['work_domain']:
@@ -184,6 +188,7 @@ def update_parent_ticket(data):
                 if result:
                     d['completion_flag'] = True
                     d['status'] = 1
+                    d['updated_at'] = time
                 else:
-                    i['completion_flag'] = False
-                    i['status'] = 0
+                    d['completion_flag'] = False
+                    d['status'] = 0
